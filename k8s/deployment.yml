@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-getting-start
+  labels:
+    app: spring-boot-getting-start
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-getting-start
+  template:
+    metadata:
+      labels:
+        app: spring-boot-getting-start
+    spec:
+      containers:
+        - name: spring-boot-getting-start
+          image: deepaksorthiya/spring-boot-getting-start:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            timeoutSeconds: 20
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            timeoutSeconds: 20
+            initialDelaySeconds: 20
+            periodSeconds: 20
